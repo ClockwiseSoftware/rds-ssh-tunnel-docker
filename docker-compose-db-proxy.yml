@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db-proxy:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    user: node
+    environment:
+      BASTION_IP: 1.1.1.153
+      BASTION_USER: ec2-user
+      BASTION_SSH_KEY: aws_bastion_rsa
+      SOURCE_DOMAIN_OR_IP: my-postgres-db.us-west-2.rds.amazonaws.com
+      SOURCE_PORT: 5432
+      CONTAINER_PORT: 54324
+    volumes:
+      - .:/app
+      - ~/.ssh:/home/node/.ssh
+    ports:
+      - '54324:54324'
+    tty: true
