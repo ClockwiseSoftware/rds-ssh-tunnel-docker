@@ -22,14 +22,17 @@ docker-compose -f docker-compose-db-proxy.yml up
 Database should be accessible from your host machine as localhost:54324 and in docker container as db-proxy:54324
 
 
-You can make a dump of DEV database in container shell:
+You can make a dump of DEV database:
+
+without logging to container's shell, just from your local console
+
+```shell
+docker-compose -f docker-compose-db-proxy.yml exec db-proxy pg_dump -h localhost -p 54324 -U api_dev -f dump.sql databasename_dev
+```
+
+or log into a container shell run pg_dump like below and paste postgres user's password
 
 ```shell
 docker-compose -f docker-compose-db-proxy.yml exec db-proxy bash
-```
-
-and then into a container shell run pg_dump like below and paste postgres user's password
-
-```shell
-pg_dump -h localhost:54323 -U postgres -f dump.sql databasename_dev
+pg_dump -h localhost -p 54323 -U postgres -f dump.sql databasename_dev
 ```
