@@ -36,3 +36,20 @@ or log into a container shell run pg_dump like below and paste postgres user's p
 docker-compose -f docker-compose-db-proxy.yml exec db-proxy bash
 pg_dump -h localhost -p 54323 -U postgres -f dump.sql databasename_dev
 ```
+
+
+### Bastion keep connection alive config
+
+- Configuring the sshd part on the server.
+
+`/etc/ssh/sshd_config`
+
+```shell
+ClientAliveInterval 60
+TCPKeepAlive yes
+ClientAliveCountMax 10000
+```
+
+- Restart the ssh server
+
+service `ssh restart` or  `service sshd restart` depending on what system you are on.
