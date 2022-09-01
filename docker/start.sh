@@ -37,5 +37,15 @@ if [ -z $SOURCE_PORT ]
       exit 1
 fi
 
-ssh -i /home/node/.ssh/$BASTION_SSH_KEY -fNT -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -L 0.0.0.0:$CONTAINER_PORT:$SOURCE_DOMAIN_OR_IP:$SOURCE_PORT $BASTION_USER@$BASTION_IP
+if [ -z $ALIVE_INTERVAL ]
+  then
+      ALIVE_INTERVAL=60
+fi
+
+if [ -z $ALIVE_COUNT_MAX ]
+  then
+      ALIVE_COUNT_MAX=10
+fi
+
+ssh -i /home/node/.ssh/$BASTION_SSH_KEY -fNT -o ServerAliveInterval=$ALIVE_INTERVAL -o ServerAliveCountMax=$ALIVE_COUNT_MAX -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -L 0.0.0.0:$CONTAINER_PORT:$SOURCE_DOMAIN_OR_IP:$SOURCE_PORT $BASTION_USER@$BASTION_IP
 /bin/bash

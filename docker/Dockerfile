@@ -1,12 +1,19 @@
-FROM node:18-alpine
+FROM alpine:3
 
 RUN apk add --no-cache bash openssh postgresql-client
 
-RUN mkdir /app
+RUN addgroup -S app
 
-ADD start.sh /home/node/start.sh
-RUN chmod +x /home/node/start.sh
-RUN chown node:node /home/node/start.sh
+RUN adduser -S -D -h /home/app app app
 
-CMD /home/node/start.sh
+RUN chown -R app:app /home/app
+
+ADD start.sh /home/app/start.sh
+RUN chmod +x /home/app/start.sh
+RUN chown app:app /home/app/start.sh
+
+USER app
+WORKDIR /home/app
+
+CMD bash -x /home/app/start.sh
 

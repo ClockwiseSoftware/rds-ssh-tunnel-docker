@@ -4,7 +4,7 @@ services:
     build:
       context: ./docker
       dockerfile: Dockerfile
-    user: node
+    user: app
     environment:
       BASTION_IP: 1.1.1.153
       BASTION_USER: ec2-user
@@ -13,7 +13,6 @@ services:
       SOURCE_PORT: 5432
       CONTAINER_PORT: 54324
     volumes:
-      - .:/app
       - ~/.ssh:/home/node/.ssh
     ports:
       - '54324:54324'
