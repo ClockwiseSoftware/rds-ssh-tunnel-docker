@@ -9,12 +9,13 @@ Also, container has postgres client installed, and you can do backups or the oth
 
 ### Using DEV database proxy
 - You should have ssh key for your bastion server, for example `aws_bastion_rsa` key file in your user `~/.ssh` directory
-- Check `docker-compose-db-proxy.yml` environment section:
+- Copy `docker-compose-db-proxy.yml` and set up environment section specific for you:
   
   - BASTION_IP - It's usually your dev server IP
   - BASTION_USER - user to connect bastion server via ssh, usually `ec2-user` for amazon linux
   - BASTION_SSH_KEY - you ssh key file name `aws_bastion_rsa`
   - SOURCE_DOMAIN_OR_IP - you RDS postgres server domain
+
 
 ```shell
 docker-compose -f docker-compose-db-proxy.yml up
