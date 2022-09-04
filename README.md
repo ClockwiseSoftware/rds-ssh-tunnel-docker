@@ -15,7 +15,27 @@ Also, container has postgres client installed, and you can do backups or the oth
   - BASTION_USER - user to connect bastion server via ssh, usually `ec2-user` for amazon linux
   - BASTION_SSH_KEY - you ssh key file name `aws_bastion_rsa`
   - SOURCE_DOMAIN_OR_IP - you RDS postgres server domain
+  - ALIVE_INTERVAL - (default 60) ServerAliveInterval option https://man.openbsd.org/ssh_config.5#ServerAliveInterval
+  - ALIVE_COUNT_MAX - (default 10) ServerAliveCountMax https://man.openbsd.org/ssh_config.5#ServerAliveCountMax
 
+Docker compose sample:
+```yaml
+version: '3'
+services:
+  db-proxy:
+    image: ghcr.io/clockwisesoftware/rds-ssh-tunnel-docker:master
+    environment:
+      BASTION_IP: 1.1.1.153
+      BASTION_USER: ec2-user
+      BASTION_SSH_KEY: aws_bastion_rsa
+      SOURCE_DOMAIN_OR_IP: my-postgres-db.us-west-2.rds.amazonaws.com
+      SOURCE_PORT: 5432
+      CONTAINER_PORT: 54324
+    volumes:
+      - ~/.ssh:/home/node/.ssh
+    ports:
+      - '54324:54324'
+```
 
 ```shell
 docker-compose -f docker-compose-db-proxy.yml up
